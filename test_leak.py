@@ -1,11 +1,22 @@
 import openai
 import os
 
+safe_globals = {"__builtins__": None}
+safe_locals = {"allowed_variable": 42}
+result = eval("allowed_variable + 1", safe_globals, safe_locals)
+
 OPENAI_API_KEY="Your key is leaked!"
 var_a = "var_a is leaked"
 var_b = "var_b is leaked"
 var_c = 4
-API=os.environ.get("API")
+API_ENV=os.environ.get("API")
+
+
+def read_file(file_path):
+    with open(file_path) as f:
+        return f.read().strip()
+
+API_TXT=read_file("api_key.txt")
 
 # <<Scenario in ai agent>>
 """
